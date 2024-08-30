@@ -30,9 +30,7 @@ const io = socketIo(server, {
 })
 
 // to save files for public
-app.use(express.static(path.join(__dirname, 'src', 'profilePictures')))
-app.use(express.static(path.join(__dirname, 'src', 'coverPictures')))
-app.use(express.static(path.join(__dirname, 'src', 'messageImg')))
+app.use(express.static(path.join(__dirname, 'src', 'public')))
 
 // middleware
 app.use(express.json());

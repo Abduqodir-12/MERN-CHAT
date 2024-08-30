@@ -15,12 +15,12 @@ const userCtrl = {
                 if(!user) {return res.status(404).send({message: 'user not found'})}
 
                 if(user.profilePicture) {
-                    fs.unlink(path.join(__dirname, "../", "profilePictures", user.profilePicture), (err) => {
+                    fs.unlink(path.join(__dirname, "../", "public", user.profilePicture), (err) => {
                         if(err) throw err
                     })
                 }
                 if(user.coverPicture) {
-                    fs.unlink(path.join(__dirname, "../", "coverPictures", user.coverPicture), (err) => {
+                    fs.unlink(path.join(__dirname, "../", "public", user.coverPicture), (err) => {
                         if(err) throw err
                     })
                 }
@@ -77,12 +77,12 @@ const userCtrl = {
                             return res.status(403).send({message: 'File format is incorrect. Correct format: jpg or png'})
                         }
                         const nameImg = v4() + format;
-                        profilePicture.mv(path.join(__dirname, "../", "profilePictures", nameImg), (err) => {
+                        profilePicture.mv(path.join(__dirname, "../", "public", nameImg), (err) => {
                             if(err) throw err
                         })
                         req.body.profilePicture = nameImg;
                         if(user.profilePicture) {
-                            fs.unlink(path.join(__dirname, "../", "profilePictures", user.profilePicture), (err) => {
+                            fs.unlink(path.join(__dirname, "../", "public", user.profilePicture), (err) => {
                                 if(err) throw err
                             })
                         }
@@ -94,12 +94,12 @@ const userCtrl = {
                             return res.status(403).send({message: 'File format is incorrect'})
                         }
                         const nameImg = v4() + format;
-                        coverPicture.mv(path.join(__dirname, "../", "coverPictures", nameImg), (err) => {
+                        coverPicture.mv(path.join(__dirname, "../", "public", nameImg), (err) => {
                             if(err) throw err
                         })
                         req.body.coverPicture = nameImg;
                         if(user.coverPicture) {
-                            fs.unlink(path.join(__dirname, "../", "coverPictures", user.coverPicture), (err) => {
+                            fs.unlink(path.join(__dirname, "../", "public", user.coverPicture), (err) => {
                                 if(err) throw err
                             })
                         }

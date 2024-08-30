@@ -14,13 +14,13 @@ const messageCtrl = {
                 return res.status(201).send({ message: 'invali credentials' })
             }
             if (req.files) {
-                const { image } = req.files
+                const { image } = req.files;
                 const format = path.extname(image.name);
                 if (format !== ".png" && format !== ".jpg" && format !== ".jpeg") {
                     return res.status(403).send({ message: 'File format is incorrect. Correct format: jpg or png' })
                 }
                 const nameImg = v4() + format;
-                image.mv(path.join(__dirname, "../", "messageImg", nameImg), (err) => {
+                image.mv(path.join(__dirname, "../", "public", nameImg), (err) => {                    
                     if (err) throw err
                 })
                 req.body.file = nameImg;
@@ -49,12 +49,11 @@ const messageCtrl = {
     deleteMessage: async (req, res) => {
         try {
             const { messageId } = req.params;
-            console.log(messageId);
             
             const deletedMessage = await Message.findByIdAndDelete(messageId);
             if (deletedMessage) {
                 if (deletedMessage.file !== "") {
-                    fs.unlink(path.join(__dirname, "../", "messageImg", deletedMessage.file), (err) => {
+                    fs.unlink(path.join(__dirname, "../", "public", deletedMessage.file), (err) => {
                         if (err) {
                             return res.status(503).send({ message: err.message });
                         }
@@ -71,7 +70,6 @@ const messageCtrl = {
         try {
             const { messageId } = req.params;
             const message = await Message.findById(messageId);
-            console.log(messageId, message.senderId, req.user._id);
             
             if (message.senderId == req.user._id) {
                 if (req.files) {
@@ -82,7 +80,7 @@ const messageCtrl = {
                             return res.status(403).send({ message: "Format is incorrect" });
                         }
                         const nameImg = v4() + format;
-                        file.mv(path.join(__dirname, "../", "messageImg", nameImg), (err) => {
+                        file.mv(path.join(__dirname, "../", "public", nameImg), (err) => {
                             if (err) {
                                 res.status(503).send(err.message);
                             }
@@ -90,7 +88,7 @@ const messageCtrl = {
                         req.body.file = nameImg;
 
                         if (message.file) {
-                            fs.unlink(path.join(__dirname, "../", "messageImg", message.file), (err) => {
+                            fs.unlink(path.join(__dirname, "../", "public", message.file), (err) => {
                                 if (err) {
                                     return res.status(503).send({ message: err.message });
                                 }
