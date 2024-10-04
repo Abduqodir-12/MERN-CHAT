@@ -65,8 +65,11 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', (data) => {
         const {receivedId} = data;
+        console.log(data);
         const user = activeUsers.find(user => user.userId === receivedId)  
-
+        
+        console.log(user);
+        
         if(user) {
             io.to(user.socketId).emit("answerMessage", data)
         }
